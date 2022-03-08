@@ -207,7 +207,7 @@ class Writer(object):
                     for name, value in self.var_attributes[key].items():
                         var.setncattr(name, value)
 
-        particle_count = len(iter(data.values()).next())  # length of an arbitrary array
+        particle_count = len(next(iter(data.values())))  # length of an arbitrary array
         nc.variables['particle_count'][self.current_timestep] = particle_count
         nc.variables['time'][self.current_timestep] = (timestamp - self.ref_time).total_seconds()
         self.current_timestep += 1
