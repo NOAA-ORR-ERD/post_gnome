@@ -5,6 +5,8 @@ scipy
 matplotlib
 netCDF4
 pyshp
-cartopy #required for plotting
+pytest
 shapely
 pyyaml
+
+cartopy #required for plotting

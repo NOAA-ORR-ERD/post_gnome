@@ -199,7 +199,7 @@ class Writer(object):
             if self.ref_time is None:
                 self.ref_time = timestamp
             nc.variables['time'].units = 'seconds since {0}'.format(self.ref_time.isoformat())
-            for key, val in data.iteritems():
+            for key, val in data.items():
                 val = np.asarray(val)
                 var = nc.createVariable(key, datatype=val.dtype, dimensions=('data'))
                 # if it's a standard variable, add the attributes
@@ -207,11 +207,11 @@ class Writer(object):
                     for name, value in self.var_attributes[key].items():
                         var.setncattr(name, value)
 
-        particle_count = len(data.itervalues().next())  # length of an arbitrary array
+        particle_count = len(iter(data.values()).next())  # length of an arbitrary array
         nc.variables['particle_count'][self.current_timestep] = particle_count
         nc.variables['time'][self.current_timestep] = (timestamp - self.ref_time).total_seconds()
         self.current_timestep += 1
-        for key, val in data.iteritems():
+        for key, val in data.items():
             var = nc.variables[key]
             if len(val) != particle_count:
                 raise ValueError("All data arrays must be the same length")
