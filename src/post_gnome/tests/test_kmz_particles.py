@@ -19,8 +19,10 @@ def test_init():
 
 
 def test_copy():
-    filename = kmz_particles.nc2kmz(HERE / 'sample.nc')
+    filename = kmz_particles.nc2kmz(HERE / 'sample.nc',
+                                    kmz_file= OUTPUT / 'sample.kmz')
     assert filename.name == 'sample.kmz'
+    assert filename.is_file()
 
 
 # def test_copy_real_gnome():

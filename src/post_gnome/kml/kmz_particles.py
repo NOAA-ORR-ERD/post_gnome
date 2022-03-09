@@ -69,7 +69,7 @@ class Writer(object):
         # strip off the .kml or .kmz
         filename = os.fspath(filename)
         try:
-            filename.removesuffix(".kml").removesuffix(".kmz")
+            filename = filename.removesuffix(".kml").removesuffix(".kmz")
         except AttributeError:
             # the buggy way -- removesuffix added in python 3.9
             filename = filename.rstrip(".kml").rstrip(".kmz")
