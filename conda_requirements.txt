@@ -1,0 +1,13 @@
+# possibly incomplete set of requirements for gnome_tools
+# these all should be available on conda-forge
+
+numpy
+scipy
+matplotlib
+netCDF4
+pyshp
+pytest
+shapely
+pyyaml
+cartopy
+

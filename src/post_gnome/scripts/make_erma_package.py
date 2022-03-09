@@ -10,6 +10,7 @@ import os
 import sys
 import shutil
 import datetime
+from pathlib import Path
 from post_gnome import make_layer_file, nc2shape
 import yaml
 
@@ -205,7 +206,8 @@ make_erma_data_package.py params.yml
 
 params.yml holds the configuration for how you want the data packet configured
 
-if you don't pass in a config file -- this script will dump a sample one to update
+if you don't pass in a config file -- this script will dump a sample one called example_params.yml
+to update
 """
 
 EXAMPLE_PARAMS_FILE = """
@@ -238,15 +240,17 @@ folder_path : [Incidents & Drills, Guam SOS/SCAT Training Class Scenario, Trajec
 folder_name : 12 hour trajectory # if null folder will be named "Trajectory for %Y-%m-%d %H:%M"
 """
 
-
-if __name__ == "__main__":
+def main():
     try:
         params_file = sys.argv[1]
         create_package(params_file)
     except IndexError:
         print(USAGE)
-        with open("example_params.yml", 'w', encoding='utf-8') as outfile:
-            outfile.write(EXAMPLE_PARAMS_FILE)
+        params_filename = Path("example_params.yml")
+        if not params_filename.is_file():
+            with open(params_filename, 'w', encoding='utf-8') as outfile:
+                outfile.write(EXAMPLE_PARAMS_FILE)
 
-
+if __name__ == "__main__":
+    main()
 
