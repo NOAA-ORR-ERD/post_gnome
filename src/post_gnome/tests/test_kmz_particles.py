@@ -2,6 +2,8 @@
 
 """
 test code for kmz files
+
+Hmm -- these don't actually do much
 """
 
 from pathlib import Path
@@ -9,18 +11,17 @@ from pathlib import Path
 from post_gnome.kml import kmz_particles
 
 HERE = Path(__file__).parent
+OUTPUT = HERE / 'temp_output'
 
 
 def test_init():
-    kmz_particles.Writer('junk')
+    kmz_particles.Writer(OUTPUT / 'junk')
 
 
 def test_copy():
     filename = kmz_particles.nc2kmz(HERE / 'sample.nc')
-    assert Path(filename).name == 'sample.kmz'
+    assert filename.name == 'sample.kmz'
 
-    ## fixme -- should put some real tests in here!
-    assert True
 
 # def test_copy_real_gnome():
 #     """

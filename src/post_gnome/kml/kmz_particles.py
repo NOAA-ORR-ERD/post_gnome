@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Code for workign with particle fiels in mkz
+Code for workign with particle files in kmz
 
 Only handles reading for now
 """
@@ -10,6 +10,7 @@ import os
 import zipfile
 import base64
 from datetime import datetime
+from pathlib import Path
 
 import numpy as np
 
@@ -21,7 +22,7 @@ var_attributes = nc_particles.var_attributes
 
 class Writer(object):
     """
-    class to write kmz files sutable for Google Earth
+    class to write kmz files suitable for Google Earth
     """
     time_formatter = '%m/%d/%Y %H:%M'
 
@@ -64,10 +65,16 @@ class Writer(object):
         :type nc_version: integer
         """
 
+        # fixme -- should be able to do this with Path objects
         # strip off the .kml or .kmz
-        filename = filename.rstrip(".kml").rstrip(".kmz")
+        filename = os.fspath(filename)
+        try:
+            filename.removesuffix(".kml").removesuffix(".kmz")
+        except AttributeError:
+            # the buggy way -- removesuffix added in python 3.9
+            filename = filename.rstrip(".kml").rstrip(".kmz")
 
-        self.filename = filename + ".kmz"
+        self.filename = Path(filename + ".kmz")
         self.kml_name = os.path.split(filename)[-1] + ".kml"
 
         self.num_timesteps = num_timesteps
@@ -269,17 +276,16 @@ def nc2kmz(nc_file, kmz_file=None):
     """
     convert a nc_particles file to kmz
 
-    :param nc_file: name of nertcdf file to read
+    :param nc_file: name of netcdf file to read
 
     :param kmz_file=None: name of kmz file to write. If None, the nc_file's name wil be used, with .kmz as teh extansion.
 
     """
 
     if kmz_file is None:
-        root = nc_file
-        root = os.fspath(root)
+        root = os.fspath(nc_file)
         root = root[:-3] if root.endswith(".nc") else root
-        kmz_file = root + ".kmz"
+        kmz_file = Path(root + ".kmz")
 
 
     reader = nc_particles.Reader(nc_file)
