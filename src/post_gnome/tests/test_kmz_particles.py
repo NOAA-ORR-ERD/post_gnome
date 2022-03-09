@@ -4,7 +4,11 @@
 test code for kmz files
 """
 
-from post_gnome import kmz_particles
+from pathlib import Path
+
+from post_gnome.kml import kmz_particles
+
+HERE = Path(__file__).parent
 
 
 def test_init():
@@ -12,8 +16,8 @@ def test_init():
 
 
 def test_copy():
-    name = kmz_particles.nc2kmz('sample.nc')
-    assert name == 'sample.kmz'
+    filename = kmz_particles.nc2kmz(HERE / 'sample.nc')
+    assert Path(filename).name == 'sample.kmz'
 
     ## fixme -- should put some real tests in here!
     assert True

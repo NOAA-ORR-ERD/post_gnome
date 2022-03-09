@@ -5,8 +5,6 @@ Code for workign with particle fiels in mkz
 
 Only handles reading for now
 """
-# for py2/3 compatibility
-from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
 import zipfile
@@ -279,8 +277,10 @@ def nc2kmz(nc_file, kmz_file=None):
 
     if kmz_file is None:
         root = nc_file
+        root = os.fspath(root)
         root = root[:-3] if root.endswith(".nc") else root
         kmz_file = root + ".kmz"
+
 
     reader = nc_particles.Reader(nc_file)
 

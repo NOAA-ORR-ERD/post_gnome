@@ -8,14 +8,15 @@ Not very complete
 Designed to be run with pytest
 
 """
-# for py2/3 compatibility
-from __future__ import absolute_import, division, print_function, unicode_literals
+from pathlib import Path
 
 import os
 
 import pytest
 import netCDF4
 from post_gnome import nc_particles
+
+HERE = Path(__file__).parent
 
 
 def test_init():
@@ -25,7 +26,7 @@ def test_init():
     w = nc_particles.Writer('junk_file.nc')
     del w
     print(os.getcwd())
-    nc_particles.Reader('sample.nc')
+    nc_particles.Reader(HERE / 'sample.nc')
 
 
 def test_3_unlimited():
