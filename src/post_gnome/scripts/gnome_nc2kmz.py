@@ -10,19 +10,20 @@ This is very simple -- it would be nice to expand it with many options!
 import sys
 
 from post_gnome import nc_particles
-from post_gnome.kml_stuff.write_kmz import write_kmz
+from post_gnome.kml.write_kmz import write_kmz
 
-if __name__ == "__main__":
+def main():
     nc_filename = sys.argv[1]
 
     kmz_filename = nc_filename.rstrip('.nc') + ".kmz"
 
-    print "processing:", nc_filename
-    print "creating:", kmz_filename
+    print("processing:", nc_filename)
+    print("creating:", kmz_filename)
 
     pf = nc_particles.Reader(nc_filename)
     data = pf.get_all_timesteps()
 
     write_kmz('kmz_filename', pf.times, data)
 
-
+if __name__ == "__main__":
+    main()

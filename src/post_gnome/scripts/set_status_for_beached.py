@@ -23,32 +23,35 @@ import shutil
 import numpy as np
 from netCDF4 import Dataset
 
-infilename = sys.argv[1]
-out_filename = infilename[:-3] + "_adjusted.nc"
+def main():
+    infilename = sys.argv[1]
+    out_filename = infilename[:-3] + "_adjusted.nc"
 
-shutil.copy(infilename, out_filename)
+    shutil.copy(infilename, out_filename)
 
-ds = Dataset(out_filename, mode='a')
+    ds = Dataset(out_filename, mode='a')
 
-particle_count = ds.variables['particle_count']
-status_codes = ds.variables['status_codes']
-ids = ds.variables['id']
-# check to make sure there aren't any lost elements:
-assert np.alltrue(np.diff(particle_count) == 0), "some elements were lost"
+    particle_count = ds.variables['particle_count']
+    status_codes = ds.variables['status_codes']
+    ids = ds.variables['id']
+    # check to make sure there aren't any lost elements:
+    assert np.alltrue(np.diff(particle_count) == 0), "some elements were lost"
 
-num_particles = particle_count[0]
-# reshape the status codes:
-status_codes = np.reshape(status_codes, (-1, num_particles))
-ids = np.reshape(ids, (-1, num_particles))
+    num_particles = particle_count[0]
+    # reshape the status codes:
+    status_codes = np.reshape(status_codes, (-1, num_particles))
+    ids = np.reshape(ids, (-1, num_particles))
 
-for particle in range(num_particles):
-    history = status_codes[:, particle]
-    if status_codes[-1, particle] == 3:
-        status_codes[:, particle] = 7
+    for particle in range(num_particles):
+        history = status_codes[:, particle]
+        if status_codes[-1, particle] == 3:
+            status_codes[:, particle] = 7
 
-# reshape it back:
-status_codes.shape = (-1,)
-ds.variables['status_codes'][:] = status_codes
+    # reshape it back:
+    status_codes.shape = (-1,)
+    ds.variables['status_codes'][:] = status_codes
 
-ds.close()
+    ds.close()
 
+if __name__ == "__main__":
+    main()

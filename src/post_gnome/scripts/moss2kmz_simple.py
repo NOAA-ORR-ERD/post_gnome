@@ -12,11 +12,11 @@ import zipfile, base64
 
 def ReadLEMossFile(filename):
     """
-    Reads an LE moss file,a nd returns the coordinates of the LEs
-    
+    Reads an LE moss file, and returns the coordinates of the LEs
+
     NOTE: this may not be very robust!
     """
-    mossfile = file(filename, 'rU')
+    mossfile = open(filename, 'rU')
     LEs = []
     while True:
         mossfile.readline()
@@ -33,7 +33,7 @@ def buildkmz(mossfilename):
     mytemplate = Template(LE_Template)
 
     outfilename = mossfilename+".kmz"
-    print "rendering: %s"%outfilename
+    print("rendering: %s"%outfilename)
 
     kmlstring = mytemplate.render(LEs=BestGuess, LEs_U=Uncertainty, IconName="DotIcon", name=Name)
 
@@ -43,7 +43,7 @@ def buildkmz(mossfilename):
     kmzfile.writestr('BlackDot.png', base64.b64decode(BlackDotData))
     kmzfile.writestr('YellowDot.png', base64.b64decode(BlackDotData))
     kmzfile.writestr(Name+".kml", kmlstring)
-    kmzfile.close()       
+    kmzfile.close()
 
 
 ### the template:
@@ -58,7 +58,7 @@ LE_Template = """<?xml version="1.0" encoding="UTF-8"?>
          <Icon>
             <href>RedDot.png</href>
          </Icon>
-         <hotSpot x="0.5"  y="0.5" xunits="fraction" yunits="fraction"/>  
+         <hotSpot x="0.5"  y="0.5" xunits="fraction" yunits="fraction"/>
       </IconStyle>
       <LabelStyle>
          <color>00000000</color>
@@ -71,7 +71,7 @@ LE_Template = """<?xml version="1.0" encoding="UTF-8"?>
          <Icon>
             <href>BlackDot.png</href>
          </Icon>
-         <hotSpot x="0.5"  y="0.5" xunits="fraction" yunits="fraction"/>  
+         <hotSpot x="0.5"  y="0.5" xunits="fraction" yunits="fraction"/>
       </IconStyle>
       <LabelStyle>
          <color>00000000</color>
@@ -84,7 +84,7 @@ LE_Template = """<?xml version="1.0" encoding="UTF-8"?>
          <Icon>
             <href>YellowDot.png</href>
          </Icon>
-         <hotSpot x="0.5"  y="0.5" xunits="fraction" yunits="fraction"/>  
+         <hotSpot x="0.5"  y="0.5" xunits="fraction" yunits="fraction"/>
       </IconStyle>
       <LabelStyle>
          <color>00000000</color>
@@ -137,17 +137,17 @@ LE_Template = """<?xml version="1.0" encoding="UTF-8"?>
       </MultiGeometry>
     </Placemark>
 
- 
+
   </Document>
 </kml>
 """
 
-# These icons (these are base64 encoded 3-pixel sized dots in a 32x32 transparent PNG)    
+# These icons (these are base64 encoded 3-pixel sized dots in a 32x32 transparent PNG)
 BlackDotData  = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABYgAAAWIBXyfQUwAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABaSURBVFiF7dWxDQAhDEPR79NNd+x765mGCSykNI6UgoLwhIvINpP1jL5eQAEFFFBAAcCbXpQk4DvH3+latR01sACfXumc8QiU/tytCGLArRqPoIACCiiggAI2js1pdbjIwXwAAAAASUVORK5CYII="
 RedDotData    = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABZAAAAWQB3ySUyAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAABaSURBVFiF7daxCcAwDETRr5Dp4n2z3rnxBMKg5gtUuLD84Aq5kjBZz+jrAgQIECBAAPC2b1YV8J3TT3etJuk1rEBOr+6c8Qiq/SG5FEEfcKnGIxAgQIAAAQI2p2Rrcf2y0MYAAAAASUVORK5CYII="
 YellowDotData = "iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAABZAAAAWQB3ySUyAAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAACESURBVFiF7ZUxCsMwEATnDPpO8in9KC87v8fSpkiauLKFiRHswjVXrAY0cCGJO7Pc+roBDGAAAxhgYoAotKj0SHokLSpEGaqSdH42qhr6mY060hVD57hHAo/ddmXR82zVpA6I16Hdoa4RB0T5epBq5Of/Kf9z4MJM6oABDGAAAxjgwrwBd2LRMaa/WmgAAAAASUVORK5CYII="
 
-if __name__ == "__main__":
+def main():
     import sys
     if len(sys.argv) > 1:
         name = sys.argv[1]
@@ -157,7 +157,8 @@ if __name__ == "__main__":
             name = name[:-4]
     else:
         name = "tests"
-        
-    buildkmz(name)
-    
 
+    buildkmz(name)
+
+if __name__ == "__main__":
+    main()
